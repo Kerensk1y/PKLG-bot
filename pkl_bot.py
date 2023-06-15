@@ -32,14 +32,15 @@ def admin_panel(message):
                          'Ты не похож на хозяина. Отправьте команду /start, чтобы воспользоваться ботом')
 '''
 
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
     markup = types.InlineKeyboardMarkup(row_width=1)
     item1 = types.InlineKeyboardButton("Проектирование АД", callback_data='ROAD')
     item2 = types.InlineKeyboardButton("Проектирование ПГС", callback_data='PGS')
     markup.add(item1, item2)
-
-    bot.send_photo(message.chat.id, open('headers/start.png', 'rb'), caption=startmsg, reply_markup=markup)
+    bot.send_photo(message.chat.id, open('headers/start.jpg', 'rb'), caption=startmsg, parse_mode='Markdown',
+                   reply_markup=markup)
 
 
 @bot.message_handler(commands=['help'])
@@ -66,11 +67,11 @@ def answer(message):
         markup = types.InlineKeyboardMarkup(row_width=1)
         print(callbkz[s])
         if 0 <= s <= len(callbkz) - 1:
-            item1 = types.InlineKeyboardButton("Готово", callback_data=callbkz[s + 1])
-            item2 = types.InlineKeyboardButton("Назад", callback_data=callbkz[s - 1])
+            item1 = types.InlineKeyboardButton("Готово ☑️", callback_data=callbkz[s + 1])
+            item2 = types.InlineKeyboardButton("Назад ⬅️", callback_data=callbkz[s - 1])
             markup.add(item1, item2)
             employee_data.append(message.text)
-            bot.reply_to(message, 'Записал, нажмите "Готово" для продолжения', reply_markup=markup)
+            bot.reply_to(message, 'Записал, нажмите *"Готово"* для продолжения', parse_mode= 'Markdown', reply_markup=markup)
         else:
             s = 0
     else:
@@ -84,7 +85,7 @@ def callback_inline(call):
     global employee_data, zap, a, s
     if call.message:
         markup = types.InlineKeyboardMarkup(row_width=1)
-        zapros = 'Запросить техническое задание'
+        zapros = 'Запросить техническое задание 🗒'
         if call.data == 'ROAD':
             s = 0
             zap = False
@@ -97,132 +98,150 @@ def callback_inline(call):
             item7 = types.InlineKeyboardButton(proch_but, callback_data='PROCH')
             item8 = types.InlineKeyboardButton(kad_but, callback_data='KAD')
             item9 = types.InlineKeyboardButton("Назад", callback_data='START')
-            markup.add(item1, item2, item3, item4, item5, item6, item7, item8, item9)
+            markup.add(item6, item5, item1, item2, item3, item4, item8, item7, item9)
             msg = menu_admsg
-            bot.send_photo(call.message.chat.id, open('headers/menu_ad.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/menu_ad.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg.format(call.message.from_user, bot.get_me()),
+                             parse_mode='html', reply_markup=markup)
             employee_data = []
 
         elif call.data == 'PGS':
             s = 0
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Назад", callback_data='START')
+            item2 = types.InlineKeyboardButton("Назад ⬅️", callback_data='START')
             markup.add(item1, item2)
             a = 'ПГС'
             msg = pgsmsg
-            bot.send_photo(call.message.chat.id, open('headers/pgs.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/pgs.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'II':
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Вернуться в меню", callback_data='ROAD')
+            item2 = types.InlineKeyboardButton("Вернуться в меню  ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             a = ii_but
             msg = iimsg
-            bot.send_photo(call.message.chat.id, open('headers/ii.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/ii.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'ISSO':
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Вернуться в меню", callback_data='ROAD')
+            item2 = types.InlineKeyboardButton("Вернуться в меню ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             a = isso_but
             msg = issomsg
-            bot.send_photo(call.message.chat.id, open('headers/isso.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/isso.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'KAD':
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Вернуться в меню", callback_data='ROAD')
+            item2 = types.InlineKeyboardButton("Вернуться в меню ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             a = kad_but
             msg = kadmsg
-            bot.send_photo(call.message.chat.id, open('headers/kad.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/kad.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'SMET':
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Вернуться в меню", callback_data='ROAD')
+            item2 = types.InlineKeyboardButton("Вернуться в меню ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             a = smet_but
             msg = smetmsg
-            bot.send_photo(call.message.chat.id, open('headers/smet.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/smet.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'PROCH':
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Вернуться в меню", callback_data='ROAD')
+            item2 = types.InlineKeyboardButton("Вернуться в меню ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             a = proch_but
             msg = prochmsg
-            bot.send_photo(call.message.chat.id, open('headers/proch.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/proch.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'SID':
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Вернуться в меню", callback_data='ROAD')
+            item2 = types.InlineKeyboardButton("Вернуться в меню ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             a = sid_but
             msg = sidmsg
-            bot.send_photo(call.message.chat.id, open('headers/sid.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/sid.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'OOS':
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Вернуться в меню", callback_data='ROAD')
+            item2 = types.InlineKeyboardButton("Вернуться в меню ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             a = oos_but
             msg = oosmsg
-            bot.send_photo(call.message.chat.id, open('headers/oos.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/oos.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'AD':
             zap = False
             item1 = types.InlineKeyboardButton(zapros, callback_data='TZ')
-            item2 = types.InlineKeyboardButton("Вернуться в меню", callback_data='ROAD')
+            item2 = types.InlineKeyboardButton("Вернуться в меню ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             a = ad_but
             msg = admsg
-            bot.send_photo(call.message.chat.id, open('headers/ad.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/ad.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'TZ':
             s = 5
             zap = False
-            item1 = types.InlineKeyboardButton("✅ Получить ТЗ с подтверждением согласия на обработку персональных данных",
-                                               callback_data='FIO')
-            item2 = types.InlineKeyboardButton("Назад", callback_data='ROAD')
+            item1 = types.InlineKeyboardButton(
+                "✅ Подтвердить согласие на обработку персональных данных",
+                callback_data='FIO')
+            item2 = types.InlineKeyboardButton("Назад ⬅️", callback_data='ROAD')
             markup.add(item1, item2)
             msg = tzmsg
-            bot.send_photo(call.message.chat.id, open('headers/tz.png', 'rb'), caption=msg, reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/tz.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'FIO':
             s = 0
             employee_data = [a]
             zap = True
-            msg = "Приступим к заполнению анкеты:\nВведите ФИО"
-            bot.send_message(call.message.chat.id, text=msg)
+            msg = "Приступим к заполнению анкеты:\nВведите *ФИО* полностью"
+            # bot.send_message(call.message.chat.id, text=msg)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown')
 
         elif call.data == 'PHONE':
             s = 1
             zap = True
-            msg = "Введите номер телефона:"
-            bot.send_message(call.message.chat.id, text=msg)
+            msg = "Введите *номер телефона*:"
+            # bot.send_message(call.message.chat.id, text=msg)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown')
+
 
         elif call.data == 'MAIL':
             s = 2
             zap = True
-            msg = "Введите почту:"
-            bot.send_message(call.message.chat.id, text=msg)
+            msg = "Введите адрес электронной *почты*:"
+            # bot.send_message(call.message.chat.id, text=msg)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown')
+
 
         elif call.data == 'DOP':
             s = 3
             zap = True
-            msg = "Введите дополнительную информацию: ссылку на диск с портфолио, опытом работы или резюме."
-            bot.send_message(call.message.chat.id, text=msg)
+            msg = "Введите дополнительную информацию: *ссылку на диск* с портфолио, опытом работы или резюме."
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown')
 
         elif call.data == 'TRUE':
             s = 4
             zap = False
-            item1 = types.InlineKeyboardButton("Данные подтверждаю", callback_data='HR')
+            item1 = types.InlineKeyboardButton("Подтвердить данные", callback_data='HR')
             item2 = types.InlineKeyboardButton("Исправить данные", callback_data='FIO')
             markup.add(item1, item2)
             out = ''
@@ -232,14 +251,15 @@ def callback_inline(call):
                 else:
                     out += employee_data[i]
             msg = "Проверьте, правильно ли введены данные:\t" + str(out)
-            bot.send_message(call.message.chat.id, text=msg, reply_markup=markup)
+            bot.send_message(call.message.chat.id, text=msg, parse_mode= 'Markdown', reply_markup=markup)
 
         elif call.data == 'HR':
             zap = False
-            item1 = types.InlineKeyboardButton("Вернуться в начало", callback_data='START')
+            item1 = types.InlineKeyboardButton("Вернуться в начало ⬅️", callback_data='START')
             markup.add(item1)
             msg = hrmsg
-            bot.send_photo(call.message.chat.id, open('headers/hr.png', 'rb'), caption=msg, reply_markup=markup)
+            bot.send_photo(call.message.chat.id, open('headers/start.jpg', 'rb'), caption=hrmsg, parse_mode= 'Markdown', reply_markup=markup)
+            # bot.send_photo(call.message.chat.id, open('headers/hr.png', 'rb'), caption=msg, reply_markup=markup)
             # app_table(a, employee_data[1], employee_data[2], employee_data[3], employee_data[4])
             fn = 'test.xlsx'
             wb = load_workbook(fn)
@@ -256,7 +276,8 @@ def callback_inline(call):
             item1 = types.InlineKeyboardButton("Проектирование АД", callback_data='ROAD')
             item2 = types.InlineKeyboardButton("Проектирование ПГС", callback_data='PGS')
             markup.add(item1, item2)
-            bot.send_photo(call.message.chat.id, open('headers/start.png', 'rb'), caption=startmsg, reply_markup=markup)
+            bot.send_photo(call.message.chat.id, open('headers/start.jpg', 'rb'), caption=startmsg, parse_mode= 'Markdown', reply_markup=markup)
+            # bot.send_message(call.message.chat.id, text=startmsg, reply_markup=markup)
 
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
