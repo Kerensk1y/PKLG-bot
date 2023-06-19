@@ -267,8 +267,8 @@ def callback_inline(call):
             ws.append(employee_data)
             wb.save(fn)
             wb.close()
+            main(employee_data)
             employee_data = []
-            main()
 
         elif call.data == 'START':
 
