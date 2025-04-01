@@ -1,3 +1,5 @@
+## Filling out the form Telegram with messages via Bot, writing to .xlsx document, syncing with Google Sheets
+
 1. Clone the project:
 ```
 git clone https://github.com/Kerensk1y/News_parser.git
